@@ -4,7 +4,7 @@
 # final executable to build:
 TARGET= satSolving
 # .o files to link in (for all .c files)
-OBJS = main.o inputOutput.o
+OBJS = main.o inputOutput.o linkList.o backTraceSearch.o
 
 # Add support for pthread and real-time clock here:
 CFLAGS = -Wall -g -lrt -pthread -std=c99 -Werror -D_POSIX_C_SOURCE=199309L

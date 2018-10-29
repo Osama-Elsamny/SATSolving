@@ -7,6 +7,8 @@
 #include <math.h>
 #include "string.h"
 #include "inputOutput.h"
+#include "linkList.h"
+
 
 int main(int argc, char* argv[]){
     int variablesNum = 0;
