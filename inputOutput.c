@@ -17,8 +17,9 @@
  * Input: "file_name", the name of the input file
  * Output: "v_num", the number of variables.
  *         "c_num", the number of clauses.
+ *         "l_num", the number of liters need to create an array
 */
-void header_read(char* file_name, int *v_num, int *c_num){
+void header_read(char* file_name, int *v_num, int *c_num, int *l_num){
     FILE *inputFile = NULL;
     char *word = NULL;
     inputFile = fopen(file_name,"r");
@@ -41,6 +42,12 @@ void header_read(char* file_name, int *v_num, int *c_num){
         printf("HEADER_READ - Invalid numbers of variables\n");
         exit(1);
     }
+    while(!feof(inputFile)){
+        fscanf(inputFile, "%s", word);
+        if((spaceCheck(word)) || (atoi(word) == 0))
+            continue;
+        *l_num += 1;
+    }
     free(word);
     fclose(inputFile);
 }
@@ -51,13 +58,18 @@ void header_read(char* file_name, int *v_num, int *c_num){
  * Developer: Osama Elsamny
  * Input: "file_name", the name of the input file.
  *        "c_num", the number of clauses. 
- * Output: "clauses", an array with all the clauses. 
+ *        "l_num", the number of literals.
+ * Output: "clauses", an array with all the clauses.
+ *         "literalPerClause", an array with the number of 
+ *          literal per clause order based on the clauses. 
 */
-void data_read(char* file_name, int c_num, int clauses[]){
+void data_read(char* file_name, int c_num, int l_num, int clauses[], int literalPerClause[]){
     FILE *inputFile = NULL;
     char *word = NULL;
     int skip = 4;
-    int saved = 0;
+    int savedLiterals = 0;
+    int count = 0;
+    int savedClauses = 0;
 
     inputFile = fopen(file_name,"r");
     if(inputFile == NULL){
@@ -70,13 +82,24 @@ void data_read(char* file_name, int c_num, int clauses[]){
     }
     while(!feof(inputFile)){
         fscanf(inputFile, "%s", word);
-        if((spaceCheck(word)) || (atoi(word) == 0))
+        if((spaceCheck(word)) || (atoi(word) == 0)){
+            if(atoi(word) == 0){
+                literalPerClause[savedClauses] = count;
+                count = 0;
+                savedClauses++;
+            }
             continue;
-        clauses[saved] = atoi(word);
-        saved++;
+        }
+        clauses[savedLiterals] = atoi(word);
+        savedLiterals++;
+        count++;
     }
-    if((3 * c_num) != saved){
-        printf("DATA_READ - The number of caluses faild to be equal to the number given in the header\n");
+    if(l_num != savedLiterals){
+        printf("DATA_READ - The number of clauses faild to be equal to the number given in the header\n");
+        exit(1);
+    }
+    if(c_num != savedClauses){
+        printf("DATA_READ - The number of literals per clauses faild to be equal to the number given in the header\n");
         exit(1);
     }
     free(word);

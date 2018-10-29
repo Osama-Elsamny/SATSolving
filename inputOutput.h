@@ -9,6 +9,6 @@
 #include "string.h"
 #define MAX_STRING_SIZE 1024
 
-void header_read(char* file_name, int *v_num, int *c_num);
+void header_read(char* file_name, int *v_num, int *c_num, int *l_num);
 bool spaceCheck(char* word);
-void data_read(char* file_name, int c_num, int clauses[]);
+void data_read(char* file_name, int c_num, int l_num, int clauses[], int literalPerClause[]);

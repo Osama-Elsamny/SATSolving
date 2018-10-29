@@ -13,9 +13,11 @@
 int main(int argc, char* argv[]){
     int variablesNum = 0;
     int clauseNum = 0;
-    header_read(argv[1], &variablesNum, &clauseNum);
-    int clauses[3 * clauseNum];
-    data_read(argv[1], clauseNum, clauses);
+    int literalNum = 0;
+    header_read(argv[1], &variablesNum, &clauseNum, &literalNum);
+    int clauses[literalNum];
+    int literalPerClause[clauseNum];
+    data_read(argv[1], clauseNum, literalNum, clauses, literalPerClause);
     return 0;
 }
 /** 
