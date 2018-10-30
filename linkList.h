@@ -11,6 +11,7 @@
 
 typedef struct Node{ 
   bool data; 
+  bool status;
   struct Node *treeHead;
   struct Node *parent;
   struct Node *left;
@@ -19,6 +20,6 @@ typedef struct Node{
   bool *guessUntillNode;
 }Node; 
 
-Node* getInitializedNode(Node *head, int level);
+Node* getInitializedNode(int level);
 void addLeft(Node *parent, Node *add);
 void addRight(Node *parent, Node *add);

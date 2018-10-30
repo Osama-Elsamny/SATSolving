@@ -18,14 +18,13 @@
  * Output: Node*, return a pointer of type Node to
  *         the created object
 */
-Node* getInitializedNode(Node *head, int level){
+Node* getInitializedNode(int level){
     Node *init = (Node *) malloc(sizeof(Node));
     init->left = NULL;
     init->right = NULL;
     init->parent = NULL;
-    init->treeHead = head;
+    init->status = true;
     init->level = level;
-    init->guessUntillNode = (bool *) malloc((level) * sizeof(bool));
     return init;
 }
 
@@ -41,10 +40,6 @@ void addLeft(Node *parent, Node *add){
     parent->left = add;
     add->parent = parent;
     add->data = false;
-    for(int i = 0; i < parent->level; i++){
-        add->guessUntillNode[i] = parent->guessUntillNode[i];
-    }
-    add->guessUntillNode[add->level - 1] = false;
 }
 
 /** 
@@ -59,8 +54,4 @@ void addRight(Node *parent, Node *add){
     parent->right = add;
     add->parent = parent;
     add->data = true;
-    for(int i = 0; i < parent->level; i++){
-        add->guessUntillNode[i] = parent->guessUntillNode[i];
-    }
-    add->guessUntillNode[add->level - 1] = true;
 }
