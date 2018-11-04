@@ -21,17 +21,21 @@ int main(int argc, char* argv[]){
     int literalPerClause[clauseNum];
     data_read(argv[1], clauseNum, literalNum, clauses, literalPerClause);
     solutionNode = getSolution(head, variablesNum, clauseNum, literalPerClause, clauses);
-    printf("Solution is:\n");
-    for(int i = 0; i < variablesNum; i++){
-        printf("X%d is, ",i +1);
-        if(solutionNode->guessUntillNode[i]){
-            printf("1\t");
-        }else{
-            printf("0\t");
+    if(head->status == false){
+        printf("No solution\n");
+    }else{
+        printf("Solution is:\n");
+        for(int i = 0; i < variablesNum; i++){
+            printf("X%d is, ",i +1);
+            if(solutionNode->guessUntillNode[i]){
+                printf("1\t");
+            }else{
+                printf("0\t");
+            }
+            printf("\n");
         }
         printf("\n");
     }
-    printf("\n");
     return 0;
 }
 /** 

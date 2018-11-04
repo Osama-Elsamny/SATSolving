@@ -37,19 +37,22 @@ Node* getSolution(Node *node, int lastLevel, int clauseNum,  int literalPerClaus
         addLeft(node, left);
         addRight(node, right);
         Node* resultRight = getSolution(right, lastLevel, clauseNum,  literalPerClause, clauses);
-        Node* resultLeft = getSolution(left, lastLevel, clauseNum,  literalPerClause, clauses);
-        if(resultRight){
-            return resultRight;
-        }else{
-            return resultLeft;
+        if(left->status){
+            Node* resultLeft = getSolution(left, lastLevel, clauseNum,  literalPerClause, clauses);
+            if(resultRight){
+                return resultRight;
+            }else{
+                return resultLeft;
+            }
         }
+        return resultRight;
     }
 }
 
 Node* backTrack(Node *node){
     node->status = false;
-    while(!(node)){
-        node = node->parent;
+    node = node->parent;
+    while(node){
         if((!(node->right->status)) && (!(node->left->status))){
             node->status = false;
         }else{
@@ -59,6 +62,7 @@ Node* backTrack(Node *node){
                 return node->left;
             }
         }
+        node = node->parent;
     }
     return NULL;
 }
