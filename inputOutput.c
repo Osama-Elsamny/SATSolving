@@ -116,3 +116,30 @@ void data_read(char* file_name, int c_num, int l_num, int clauses[], int literal
 bool spaceCheck(char* word){
     return (strcmp(word, " ") == 0) || (strcmp(word, "\t") == 0) || (strcmp(word, "\n") == 0) || (strcmp(word, "\v") == 0) || (strcmp(word, "\f") == 0) || (strcmp(word, "\r") == 0);
 }
+
+/** 
+ * Funcition name: printSolution
+ * Purpose: To print solution found
+ * Developer: Osama Elsamny 
+ * Input: "solutionNode", the node with saved solution
+ *        "head", the tree head
+ *        "variablesNum", the variables number specified in the file
+ * Output: N/A 
+*/
+void printSolution(Node* solutionNode, Node* head, int variablesNum){
+    if(head->status == false){
+        printf("No solution\n");
+    }else{
+        printf("Solution is:\n");
+        for(int i = 0; i < variablesNum; i++){
+            printf("X%d is, ",i +1);
+            if(solutionNode->guessUntillNode[i]){
+                printf("1\t");
+            }else{
+                printf("0\t");
+            }
+            printf("\n");
+        }
+        printf("\n");
+    }
+}
