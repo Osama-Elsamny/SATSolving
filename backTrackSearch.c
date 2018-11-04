@@ -7,16 +7,16 @@
 #include <math.h>
 #include <ctype.h>
 #include "string.h"
-#include "linkList.h"
+#include "backTrackSearch.h"
 
 
-Node* getSolution(Node *node, int lastLevel){
-    bool temp = evaulateClauses();
+Node* getSolution(Node *node, int lastLevel, int clauseNum,  int literalPerClause[], int clauses[]){
+    bool temp = evaulateClauses(node, clauseNum,  literalPerClause, clauses);
     if(node->level == lastLevel){
         if(temp == false){
             Node* nextNode = backTrack(node);
             if(nextNode){
-                return getSolution(nextNode, lastLevel);
+                return getSolution(nextNode, lastLevel, clauseNum,  literalPerClause, clauses);
             }else{
                 return nextNode;
             }
@@ -27,7 +27,7 @@ Node* getSolution(Node *node, int lastLevel){
     if(temp == false){
         Node* nextNode = backTrack(node);
         if(nextNode){
-            return getSolution(nextNode, lastLevel);
+            return getSolution(nextNode, lastLevel, clauseNum,  literalPerClause, clauses);
         }else{
             return nextNode;
         }
@@ -36,8 +36,8 @@ Node* getSolution(Node *node, int lastLevel){
         Node* left = getInitializedNode(node->level + 1);
         addLeft(node, left);
         addRight(node, right);
-        Node* resultRight = getSolution(right, lastLevel);
-        Node* resultLeft = getSolution(left, lastLevel);
+        Node* resultRight = getSolution(right, lastLevel, clauseNum,  literalPerClause, clauses);
+        Node* resultLeft = getSolution(left, lastLevel, clauseNum,  literalPerClause, clauses);
         if(resultRight){
             return resultRight;
         }else{
@@ -47,7 +47,7 @@ Node* getSolution(Node *node, int lastLevel){
 }
 
 Node* backTrack(Node *node){
-    node->status = false
+    node->status = false;
     while(!(node)){
         node = node->parent;
         if((!(node->right->status)) && (!(node->left->status))){
@@ -63,13 +63,44 @@ Node* backTrack(Node *node){
     return NULL;
 }
 
-bool evaulateClauses(Node *node, int variblesNum, int clauseNum){
-    bool clauseVal = false;
-    int solutionGuess[variblesNum];
+bool evaulateClauses(Node *node, int clauseNum, int literalPerClause[], int clauses[]){
+    bool formulaVal = true;
+    bool clauseVal = true;
+    bool temp = true;
+    int literalIndex = 0;
+    int index = 0;
+    getGuessUntilNow(node);
     for(int i = 0; i < clauseNum; i++){
-        for(int j = 0; j < liter; j++){
-
+        clauseVal = false;
+        for(int j = 0; j < literalPerClause[i]; j++){
+            temp = (0 < clauses[literalIndex]);
+            index = abs(clauses[literalIndex]);
+            literalIndex++;
+            if(index > node->level){
+                j = literalPerClause[i];
+                clauseVal = true;
+                continue;
+            }
+            if(node->guessUntillNode[index - 1] == temp){
+                clauseVal = true;
+            }
+        }
+        if(!clauseVal){
+            formulaVal = false;
+            break; 
         }
     }
-    return clauseVal;
+    return formulaVal;
+}
+
+void getGuessUntilNow(Node *node){
+    Node* itr = node;
+    node->guessUntillNode = (bool *) malloc(node->level * sizeof(bool));
+    while(itr){
+        if(itr->level == 0){
+            break;
+        }
+        node->guessUntillNode[itr->level - 1] = itr->data;
+        itr = itr->parent;
+    }
 }

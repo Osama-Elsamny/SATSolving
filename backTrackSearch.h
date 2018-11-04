@@ -10,6 +10,7 @@
 #include "linkList.h"
 
 
-Node* getSolution(Node *node, int lastLevel, int level);
+Node* getSolution(Node *node, int lastLevel, int clauseNum,  int literalPerClause[], int clauses[]);
 Node* backTrack(Node *node);
-bool evaulateClauses();
+bool evaulateClauses(Node *node, int clauseNum,  int literalPerClause[], int clauses[]);
+void getGuessUntilNow(Node *node);

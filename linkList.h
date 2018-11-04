@@ -12,12 +12,11 @@
 typedef struct Node{ 
   bool data; 
   bool status;
-  struct Node *treeHead;
+  int level;
+  bool* guessUntillNode;
   struct Node *parent;
   struct Node *left;
   struct Node *right;
-  int level;
-  bool *guessUntillNode;
 }Node; 
 
 Node* getInitializedNode(int level);
