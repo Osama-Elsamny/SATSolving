@@ -72,7 +72,7 @@ Node* getSolution(Node *node, int lastLevel, int clauseNum,  int literalPerClaus
 Node* backTrack(Node *node){
     node->status = false;
     node = node->parent;
-    while(node){
+    while((node) && (node->parent->level > 2)){
         if((!(node->right->status)) && (!(node->left->status))){
             node->status = false;
         }else{
@@ -113,7 +113,6 @@ bool evaulateClauses(Node *node, int clauseNum, int literalPerClause[], int clau
             index = abs(clauses[literalIndex]);
             literalIndex++;
             if(index > node->level){
-                j = literalPerClause[i];
                 clauseVal = true;
                 continue;
             }

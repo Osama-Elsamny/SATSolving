@@ -132,7 +132,7 @@ void printSolution(Node* solutionNode, Node* head, int variablesNum){
     }else{
         printf("Solution is:\n");
         for(int i = 0; i < variablesNum; i++){
-            printf("X%d is, ",i +1);
+            printf("X%d is ",i + 1);
             if(solutionNode->guessUntillNode[i]){
                 printf("1\t");
             }else{
