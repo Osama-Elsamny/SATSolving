@@ -72,7 +72,7 @@ Node* getSolution(Node *node, int lastLevel, int clauseNum,  int literalPerClaus
 Node* backTrack(Node *node){
     node->status = false;
     node = node->parent;
-    while((node) && (node->parent->level > 2)){
+    while((node) && (node->level > 2)){
         if((!(node->right->status)) && (!(node->left->status))){
             node->status = false;
         }else{
@@ -141,7 +141,7 @@ void getGuessUntilNow(Node *node){
         printf("Node is null\n");
     }
     Node* itr = node;
-    node->guessUntillNode = (bool *) malloc(node->level * sizeof(bool));
+    node->guessUntillNode = (bool *) malloc((node->level) * sizeof(bool));
     while(itr){
         if(itr->level == 0){
             break;

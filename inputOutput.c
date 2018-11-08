@@ -39,7 +39,7 @@ void header_read(char* file_name, int *v_num, int *c_num, int *l_num){
     fscanf(inputFile, "%s", word);
     *c_num = atoi(word);
     if((*c_num >= 1024) || (*c_num <= 0)){
-        printf("HEADER_READ - Invalid numbers of variables\n");
+        printf("HEADER_READ - Invalid numbers of clauses\n");
         exit(1);
     }
     while(!feof(inputFile)){
@@ -127,8 +127,8 @@ bool spaceCheck(char* word){
  * Output: N/A 
 */
 void printSolution(Node* solutionNode, Node* head, int variablesNum){
-    if(head->status == false){
-        printf("No solution\n");
+    if((head->status == false) || (solutionNode == NULL)){
+        printf("No solution found\n");
     }else{
         printf("Solution is:\n");
         for(int i = 0; i < variablesNum; i++){

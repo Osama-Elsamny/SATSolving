@@ -65,14 +65,14 @@ void setup4threads(Node* node, Args **input){
     Node* left = getInitializedNode(node->level + 1);
     addLeft(node, left);
     addRight(node, right);
-    Node* right1 = getInitializedNode(node->level + 1);
-    Node* left1 = getInitializedNode(node->level + 1);
+    Node* right1 = getInitializedNode(node->level + 2);
+    Node* left1 = getInitializedNode(node->level + 2);
     addLeft(node->right, left1);
     addRight(node->right, right1);
     input[3]->head = node->right->right;
     input[2]->head = node->right->left;
-    Node* right2 = getInitializedNode(node->level + 1);
-    Node* left2 = getInitializedNode(node->level + 1);
+    Node* right2 = getInitializedNode(node->level + 2);
+    Node* left2 = getInitializedNode(node->level + 2);
     addLeft(node->left, left2);
     addRight(node->left, right2);
     input[1]->head = node->left->right;
