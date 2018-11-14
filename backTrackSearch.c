@@ -9,6 +9,10 @@
 #include "string.h"
 #include "backTrackSearch.h"
 
+
+
+
+
 /** 
  * Funcition name: getSolution
  * Purpose: Recursively finds the solution of the formula
@@ -50,7 +54,7 @@ Node* getSolution(Node *node, int lastLevel, int clauseNum,  int literalPerClaus
         addLeft(node, left);
         addRight(node, right);
         Node* resultRight = getSolution(right, lastLevel, clauseNum,  literalPerClause, clauses);
-        if(left->status){
+        if((left->status) && (!resultRight)){
             Node* resultLeft = getSolution(left, lastLevel, clauseNum,  literalPerClause, clauses);
             if(resultRight){
                 return resultRight;
@@ -72,6 +76,10 @@ Node* getSolution(Node *node, int lastLevel, int clauseNum,  int literalPerClaus
 Node* backTrack(Node *node){
     node->status = false;
     node = node->parent;
+    pthread_mutex_lock(&backTrackCounter_mutex);
+    backTrackCounter = backTrackCounter + 1;
+    //printf("%d: \n", backTrackCounter);
+    pthread_mutex_unlock(&backTrackCounter_mutex);
     while((node) && (node->level > 2)){
         if((!(node->right->status)) && (!(node->left->status))){
             node->status = false;
@@ -142,6 +150,11 @@ void getGuessUntilNow(Node *node){
     }
     Node* itr = node;
     node->guessUntillNode = (bool *) malloc((node->level) * sizeof(bool));
+    if(!node->guessUntillNode){
+        printf("Ooohhhh my gooood\nI can't the file is too big\nNoooooh I can't\n");
+        printf("failed to allocate memory in the heap\n");
+        exit(1);
+    }
     while(itr){
         if(itr->level == 0){
             break;

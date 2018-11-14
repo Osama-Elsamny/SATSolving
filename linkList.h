@@ -1,3 +1,6 @@
+#ifndef LINKLIST_H
+#define LINKLIST_H
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -22,3 +25,5 @@ typedef struct Node{
 Node* getInitializedNode(int level);
 void addLeft(Node *parent, Node *add);
 void addRight(Node *parent, Node *add);
+
+#endif
