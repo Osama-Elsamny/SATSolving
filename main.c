@@ -96,7 +96,7 @@ void setup4threads(Node* node, Args **input){
 }
 
 /** 
- * Funcition name:
+ * Funcition name: printProgressReport
  * Purpose: 
  * Developer:
  * Input: 
@@ -110,6 +110,7 @@ void printProgressReport(Args **input){
         pthread_mutex_unlock(&backTrackCounter_mutex);
     }
 }
+
 int main(int argc, char* argv[]){
     int variablesNum = 0;
     int clauseNum = 0;
@@ -137,11 +138,12 @@ int main(int argc, char* argv[]){
     }
     printProgressReport(threadsArgs);
     for(int i = 0; i < THREAD_NUM; i++){
-        //pthread_kill(threads[i], 0);
         pthread_cancel(threads[i]);
         pthread_join(threads[i], NULL);
-        printf("With Thread_id %d: \n", threadsArgs[i]->id);
-        printSolution(threadsArgs[i]->solutionNode, threadsArgs[i]->head, variablesNum);
+        if(threadsArgs[i]->threadStatus){
+            printf("With Thread_id %d: \n", threadsArgs[i]->id);
+            printSolution(threadsArgs[i]->solutionNode, threadsArgs[i]->head, variablesNum);
+        }
     }
     return 0;
 }

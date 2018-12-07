@@ -28,42 +28,28 @@
  * Output: "Node", in wich the right solution is saved
 */
 Node* getSolution(Node *node, int lastLevel, int clauseNum,  int literalPerClause[], int clauses[]){
-    bool temp = evaulateClauses(node, clauseNum,  literalPerClause, clauses);
-    if(node->level == lastLevel){
+    while(node->level <= lastLevel){
+        bool temp = evaulateClauses(node, clauseNum,  literalPerClause, clauses);
         if(temp == false){
             Node* nextNode = backTrack(node);
             if(nextNode){
-                return getSolution(nextNode, lastLevel, clauseNum,  literalPerClause, clauses);
+                node = nextNode;
             }else{
                 return nextNode;
             }
         }else{
-            return node;
-        }
-    }
-    if(temp == false){
-        Node* nextNode = backTrack(node);
-        if(nextNode){
-            return getSolution(nextNode, lastLevel, clauseNum,  literalPerClause, clauses);
-        }else{
-            return nextNode;
-        }
-    }else{
-        Node* right = getInitializedNode(node->level + 1);
-        Node* left = getInitializedNode(node->level + 1);
-        addLeft(node, left);
-        addRight(node, right);
-        Node* resultRight = getSolution(right, lastLevel, clauseNum,  literalPerClause, clauses);
-        if((left->status) && (!resultRight)){
-            Node* resultLeft = getSolution(left, lastLevel, clauseNum,  literalPerClause, clauses);
-            if(resultRight){
-                return resultRight;
-            }else{
-                return resultLeft;
+            if(node->level == lastLevel){
+                break;
             }
+            Node* right = getInitializedNode(node->level + 1);
+            Node* left = getInitializedNode(node->level + 1);
+            addLeft(node, left);
+            addRight(node, right);
+            node = right;
         }
-        return resultRight;
+        pthread_testcancel();
     }
+    return node;
 }
 
 /** 
@@ -151,7 +137,6 @@ void getGuessUntilNow(Node *node){
     Node* itr = node;
     node->guessUntillNode = (bool *) malloc((node->level) * sizeof(bool));
     if(!node->guessUntillNode){
-        printf("Ooohhhh my gooood\nI can't the file is too big\nNoooooh I can't\n");
         printf("failed to allocate memory in the heap\n");
         exit(1);
     }
